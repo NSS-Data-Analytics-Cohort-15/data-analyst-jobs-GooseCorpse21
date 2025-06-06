@@ -1,21 +1,26 @@
 -- 1.	How many rows are in the data_analyst_jobs table?
- SELECT * FROM data_analysts_jobs; -- 1793
+ SELECT * 
+ FROM data_analysts_jobs; -- 1793
 
 -- 2.	Write a query to look at just the first 10 rows. What company is associated with the job posting on the 10th row?
- SELECT * FROM data_analysts_jobs LIMIT 10; -- Exxonmobil
+ SELECT * 
+ FROM data_analysts_jobs LIMIT 10; -- Exxonmobil
 
  -- 3.	How many postings are in Tennessee? How many are there in either Tennessee or Kentucky?
-SELECT * FROM data_analysts_jobs
+SELECT * 
+FROM data_analysts_jobs
 WHERE location LIKE 'TN'
 OR location LIKE 'KY'; -- 21 in TN and 6 in KY equals 27 altogether for both locations
 
 -- 4.	How many postings in Tennessee have a star rating above 4?
-SELECT * FROM data_analysts_jobs
+SELECT * 
+FROM data_analysts_jobs
 WHERE location LIKE 'TN'
 AND star_rating >= 4; -- 4 postings
 
 --5.	How many postings in the dataset have a review count between 500 and 1000?
-SELECT * FROM data_analysts_jobs
+SELECT * 
+FROM data_analysts_jobs
 WHERE review_count between 500 AND 1000; -- 151 postings
 
 -- 6.	Show the average star rating for companies in each state. The output should show the state as `state` and the average rating for the state as `avg_rating`. Which state shows the highest average rating?
@@ -27,7 +32,7 @@ ORDER BY avg_rating DESC -- WI
 
 -- 7.	Select unique job titles from the data_analyst_jobs table. How many are there?
 SELECT DISTINCT(title)
-FROM data_analysts_jobs -- there are881 in total
+FROM data_analysts_jobs -- there are 881 in total
 
 -- 8.	How many unique job titles are there for California companies?
 SELECT DISTINCT(title)
@@ -45,6 +50,22 @@ AND company IS NOT NULL
 GROUP BY company, review_count -- 40 without the review count column but 45 with it included due to some companies recieving multiple review counts for the same place.
 -- ORDER BY review_count DESC
 
--- 
+-- 10.	Add the code to order the query in #9 from highest to lowest average star rating. Which company with more than 5000 reviews across all locations in the dataset has the highest star rating? What is that rating?
+SELECT DISTINCT(company), ROUND(AVG(star_rating), 2) AS avg_rating, review_count 
+FROM data_analysts_jobs
+WHERE review_count > 5000
+AND company IS NOT NULL
+GROUP BY company, review_count
+ORDER BY avg_rating DESC -- American Express is the highest rating averaging at 4.20
 
+-- 11.	Find all the job titles that contain the word ‘Analyst’. How many different job titles are there? 
+SELECT DISTINCT(title)
+FROM data_analysts_jobs
+WHERE title LIKE '%Analyst' -- there are 320 different titles with the word 'Analyst' in them
 
+-- 12.	How many different job titles do not contain either the word ‘Analyst’ or the word ‘Analytics’? What word do these positions have in common?
+
+SELECT DISTINCT(title)
+FROM data_analysts_jobs
+WHERE title NOT LIKE '%Analyst%'
+AND title NOT LIKE '%Analytics%' -- They almost always include the word Data
